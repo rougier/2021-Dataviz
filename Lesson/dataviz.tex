@@ -1,0 +1,566 @@
+\documentclass[10pt,aspectratio=169]{beamer}
+
+\usetheme[titleformat=allcaps]{metropolis}
+\usepackage{appendixnumberbeamer}
+
+\usepackage{booktabs}
+\usepackage[scale=2]{ccicons}
+
+\usepackage{pgfplots}
+\usepgfplotslibrary{dateplot}
+
+\usepackage{xspace}
+\newcommand{\themename}{\textbf{\textsc{metropolis}}\xspace}
+
+\usepackage[rm,light]{roboto}
+\usepackage[T1]{fontenc}
+\usefonttheme{structurebold}
+\setbeamerfont{title}{series=\bfseries\rmfamily,parent=structure}
+\setbeamerfont{frametitle}{series=\bfseries\rmfamily,parent=structure}
+
+
+\usepackage{xcolor}
+\definecolor{material-indigo-900}{HTML}{1a237e}
+\definecolor{material-bluegrey-900}{HTML}{263238}
+\definecolor{material-bluegrey-600}{HTML}{546e7a}
+\setbeamercolor{frametitle}{fg=white,bg=material-bluegrey-600}
+
+\title{Scientific Visualization}
+\date{Inria - University of Bordeaux}
+\author{Nicolas P. Rougier -- Nicolas.Rougier@inria.fr}
+\institute{\today}
+% \titlegraphic{\hfill\includegraphics[height=1.5cm]{logo.pdf}}
+
+\begin{document}
+
+\maketitle
+
+
+% -----------------------------------------------------------------------------
+\begin{frame}{On the importance of vision}
+
+  \begin{quote}
+    ... about 50 percent of the cerebral cortex of primates is devoted
+    exclusively to visual processing, and the estimated territory for humans is
+    nearly comparable.
+    \begin{flushright}
+      \em \small The MIT Encyclopedia of the Cognitive Sciences
+    \end{flushright}
+  \end{quote}
+\end{frame}
+
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Anscombe's Quartet}
+  \begin{columns}
+    \begin{column}{.5\textwidth}    
+      What is common to these data sets?\\
+      ~\\
+      \begin{tabular}{ll}
+        Mean of x            & 9\\
+        Sample variance of x & 11\\
+        Mean of y            & 7.5\\
+        Sample variance of y & 4.12\\
+        Linear regression    & y=3.00+0.500*x\\
+        R squared            & 0.666\\
+        p value              & 0.0021\\
+      \end{tabular}
+
+    \end{column}
+    \begin{column}{.5\textwidth}
+      \includegraphics[width=.85\textwidth]{Anscombe-tables.png}
+    \end{column}
+  \end{columns}
+%  \vfill
+%  Data at \url{http://www.labri.fr/perso/nrougier/tmp/Anscombe.csv}\\
+
+\end{frame}
+
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Anscombe's Quartet}
+  \begin{columns}
+    \begin{column}{.5\textwidth}    
+      What is common to these data sets?\\
+      ~\\
+      \begin{tabular}{ll}
+        Mean of x            & 9\\
+        Sample variance of x & 11\\
+        Mean of y            & 7.5\\
+        Sample variance of y & 4.12\\
+        Linear regression    & y=3.00+0.500*x\\
+        R squared            & 0.666\\
+        p value              & 0.0021\\
+      \end{tabular}
+
+    \end{column}
+    \begin{column}{.5\textwidth}
+      \includegraphics[width=\textwidth]{Anscombe-plots.pdf}
+    \end{column}
+  \end{columns}
+
+\vfill
+\noindent A computer should make both calculations and graphs -- {\em Francis Anscombe (1918-2001)}
+  
+\end{frame}
+
+%% % -----------------------------------------------------------------------------
+%% \begin{frame}{Anscombe's Quartet}
+%%   \begin{quote}
+%%     {\Large A computer should make both calculations and graphs.}
+%%     \begin{flushright}
+%%       \em \small Francis Anscombe (1918-2001)
+%%     \end{flushright}
+%%   \end{quote}
+%%   \vfill
+%%   \begin{quote}
+%%     {\Large The purpose of computing is insight, not numbers.}
+%%     \begin{flushright}
+%%       \em \small Richard Hamming, 1962
+%%     \end{flushright}
+%%   \end{quote}
+%% \end{frame}
+
+
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Cholera epidemic, London, 1854}
+  \begin{columns}
+    \begin{column}{.3\textwidth}
+      John Snow (1813-1858) is considered one of the fathers of modern
+      epidemiology, in part because of his work in tracing the source of a
+      cholera outbreak in Soho, London, in 1854.
+    \end{column}
+    \begin{column}{.6\textwidth}
+      \includegraphics[width=\textwidth]{cholera-old.png}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Cholera epidemic, London, 1854}
+  \begin{columns}
+    \begin{column}{.3\textwidth}
+      John Snow (1813-1858) is considered one of the fathers of modern
+      epidemiology, in part because of his work in tracing the source of a
+      cholera outbreak in Soho, London, in 1854.
+    \end{column}
+    \begin{column}{.6\textwidth}
+      \includegraphics[width=\textwidth]{cholera-modern.png}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{What is data visualisation?}
+  \begin{quote}
+    Visualisation is a method of computing. It transforms the symbolic into the
+    geometric, enabling researchers to observe their simulations and
+    computations. Visualisation offers a method for seeing the unseen. It
+    enriches the process of scientific discovery and fosters profound and
+    unexpected insights.
+    \begin{flushright}
+      \em \small Visualisation in Scientific Computing, NSF report, 1987
+    \end{flushright}
+  \end{quote}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{The Visualization pipeline}
+  \includegraphics[width=\textwidth]{pipeline.png}
+  ~\\
+  From Scalable Real-Time Visualization Using the Cloud,
+  Holliman \& Watson, 2015.\\
+\end{frame}
+
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Quantitative vs Qualitative data}
+
+  \textbf{Quantitative}
+         (values or observations that can be measured)\\
+  \begin{itemize}
+  \item Continuous (e.g. temperature) 
+  \item Discrete (e.g. number of inhabitants)
+  \end{itemize}
+  \vfill
+  \textbf{Qualitative}
+         (values or observations that can be sorted into groups or categories)\\
+  \begin{itemize}
+  \item Nominal (e.g. nationality)
+  \item Ordinal (e.g. months)
+  \item Interval (e.g. age groups)
+  \end{itemize}
+  
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Graphical elements}
+  A scientific figure can be fully described by a set of graphic primitives
+  with different attributes:
+  \begin{itemize}
+  \item Points, markers, lines, areas, ...
+  \item Position, color, shape, size, orientation, curvature, ...
+  \item Helpers, text, axis, ticks, ...
+  \item Interaction, animation, ...
+  \end{itemize}
+  
+  Questions is thus how to organize and link them to the underlying data.
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Principles of visual perception}
+  \includegraphics[width=\textwidth]{gestalt.png}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Visualization Analysis and Design (T. Munzner)}
+  \begin{center}
+    \includegraphics[width=.75\textwidth]{VAD.png}
+  \end{center}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Data Visualization catalogue (S. Recebba)}
+  \begin{center}
+    \href{https://datavizcatalogue.com/}{
+    \includegraphics[width=\textwidth]{catalogue.png}}\\
+  \end{center}
+  {\tt datavizcatalogue.com}
+\end{frame}
+
+
+% -----------------------------------------------------------------------------
+%% \begin{frame}{Chart Suggestions - A Thought-Starter (A. Abela)}
+%%   \begin{center}
+%%     \includegraphics[width=.75\textwidth]{chart.pdf}
+%%   \end{center}
+%% \end{frame}
+
+
+  
+% =============================================================================
+\section{Ten simple rules for better figures}
+% =============================================================================
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Rule 1: Know your audience}
+  \begin{center}
+    \includegraphics[width=.75\textwidth]{rule-1.pdf}
+  \end{center} 
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Rule 2: Identify your message}
+  \begin{center}
+    \includegraphics[width=.75\textwidth]{rule-2.pdf}
+  \end{center} 
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Rule 3: Adapt the figure}
+  \begin{center}
+    \includegraphics[width=\textwidth]{rule-3.pdf}
+  \end{center} 
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Rule 4: Captions are not optional}
+
+  \begin{columns}
+    \begin{column}{.45\textwidth}
+        \begin{center}
+          \includegraphics[width=.95\textwidth]{rule-4.png}
+        \end{center}
+    \end{column}
+    \begin{column}{.45\textwidth}
+        \begin{center}
+          \includegraphics[width=.95\textwidth]{rule-4.png}
+        \end{center}
+    \end{column}
+  \end{columns}
+  \begin{columns}
+    \begin{column}{.45\textwidth}
+        \begin{center}
+          Optical illusion
+        \end{center}
+    \end{column}
+    \begin{column}{.45\textwidth}
+        \begin{center}
+          The A and B patches are actually the same color even
+          though we perceived them at being different color.
+        \end{center}
+    \end{column}
+  \end{columns}
+
+
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Rule 5: Do not trust the defaults}
+  \includegraphics[width=\textwidth]{rule-5.pdf}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Rule 6: Use color effectively}
+  \includegraphics[width=\textwidth]{rule-6.pdf}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Rule 6 bis: Above all, no jet. Ever.}
+  \includegraphics[width=\textwidth]{rule-6bis.png}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Rule 7: Do not mislead the reader}
+  \includegraphics[width=\textwidth]{rule-7.pdf}
+\end{frame}
+
+\begin{frame}{Rule 7: Do not mislead the reader. Really.}
+  \begin{center}
+    \includegraphics[width=.75\textwidth]{rule-7bis.png}
+  \end{center}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Rule 8: Avoid chartjunk}
+  \includegraphics[width=\textwidth]{rule-8.pdf}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Rule 8 bis: Less is more}
+  \begin{center}
+    \includegraphics[width=.75\textwidth]{rule-8bis.png}
+  \end{center}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Rule 9: Message trumps beauty}
+  \includegraphics[width=\textwidth]{rule-9.pdf}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Rule 10: Get the right tool}
+  \begin{itemize}
+  \item PDFCrop (remove white borders)\\
+    \url{http://pdfcrop.sourceforge.net}
+  \item GraphViz (easy graph)\\
+    \url{http://www.graphviz.org}
+  \item ImageMagick (scripted image processing)\\
+    \url{http://www.imagemagick.org/script/index.php}
+  \item Gimp (bitmap image manipulation)\\
+    \url{https://www.gimp.org}
+  \item Inkscape (vector image manipulation)\\
+    \url{https://www.inkscape.org}
+  \item Tikz (scripted vector art)\\
+    \url{http://www.texample.net/tikz/examples/all/}
+  \item And many, many, many others …
+  \end{itemize}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Rule 10: Get the right tool}
+    \includegraphics[width=\textwidth]{visualization-landscape.png}
+\end{frame}
+
+
+% -----------------------------------------------------------------------------
+\begin{frame}{A note about formats}
+  \begin{block}{Standard data formats}
+    \vspace{0pt}
+    \begin{itemize}
+    \item[] \textbf{CSV} -- Comma-Separated Values
+    \item[] \textbf{JSON} -- JavaScript Object Notation
+    \end{itemize}
+  \end{block}
+  
+  \begin{block}{Standard vector formats}
+    \vspace{0pt}
+    \begin{itemize}
+    \item[] \textbf{PDF} -- Portable Document Format
+    \item[] \textbf{SVG} -- Scalable Vector Graphics
+    \end{itemize}
+  \end{block}
+  
+  \begin{block}{Standard bitmap formats}
+    \vspace{0pt}
+    \begin{itemize}
+    \item[] \textbf{PNG} -- Portable Network Graphics (lossless)
+    \item[] \textbf{JPG} -- Joint Photographic Experts Group (lossy)
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Analyzing 1.1 Billion NYC Taxi and Uber Trips, with a Vengeance}
+
+  \begin{columns}
+    \begin{column}{.6\textwidth}
+    The New York City Taxi \& Limousine Commission has released a staggeringly
+    detailed historical dataset covering over 1.1 billion individual taxi trips
+    in the city from January 2009 through June 2015. Taken as a whole, the
+    detailed trip-level data is more than just a vast list of taxi pickup and
+    drop off coordinates: it’s a story of New York.
+    \begin{flushright}
+      \small \textnormal Todd W. Schneider
+                         (\href{https://toddwschneider.com/posts/analyzing-1-1-billion-nyc-taxi-and-uber-trips-with-a-vengeance/}{\tt toddwschneider.com})
+    \end{flushright}
+    \end{column}
+    \begin{column}{.3\textwidth}
+      \begin{center}
+        \includegraphics[width=\textwidth]{taxi_pickups_map.png}
+      \end{center}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+
+% -----------------------------------------------------------------------------
+\begin{frame}{The Simpsons by the Data}
+  \begin{columns}
+    \begin{column}{.5\textwidth}
+      Analysis of 27 seasons of Simpsons data reveals the show’s most
+      significant side characters, a pattern of patriarchy, declining TV
+      ratings, and more
+    \begin{flushright}
+      \small \textnormal Todd W. Schneider
+                         (\href{https://toddwschneider.com/posts/the-simpsons-by-the-data/}{\tt toddwschneider.com})
+    \end{flushright}
+    \end{column}
+    \begin{column}{.4\textwidth}
+      \begin{center}
+        \includegraphics[width=\textwidth]{simpsons.png}
+      \end{center}      
+    \end{column}
+  \end{columns}
+\end{frame}
+
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Conclusion}
+
+  \begin{block}{Schedule}
+    \begin{itemize}
+    \item 15/11/2021 : Introduction + study
+    \item 06/12/2021 : Dataviz catalogue + project
+    \item 13/12/2021 : Layout and projection + project
+    \item 10/01/2021 : Advanced concepts + project
+    \item 24/01/2021 : Project
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{Project}
+    \vspace{0pt} The goal of the project is to analyse wedding data
+    (from INSEE) and to produce a one page PDF comparing data from
+    2018 and 2019.  Your PDF must have at least 3 figures (with
+    caption) and contains text to introduce your analysis.
+  \end{block}
+  
+\end{frame}
+
+  
+\begin{frame}{References}
+  \begin{block}{Books}
+    \vspace{0pt}
+    \begin{itemize}
+    \item Scientific Visualization: Pyhpn + Matplotlib, N. Rougier, 2021
+    \item Fundamentals of Data Visualization, C. Wilke, 2018
+    \item Visualization Analysis and Design (\$), T. Munzner, 2014.
+    \item Trees, maps, and theorems (\$), J.-L. Doumont, 2009.
+    \item The Visual Display of Quantitative Information (\$), E.R. Tufte, 1983.
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{Other resources}
+    \vspace{0pt}
+    \begin{itemize}
+    \item A Tour through the Visualization Zoo, J. Heer, M. Bostock, and V. Ogievetsky, 2010.
+    \item The most misleading charts of 2015, fixed, K. Collins, 2015.
+    \item Data is beautiful / reddit.
+    \item \href{https://www.data-to-viz.com}{From data to viz} 
+    \end{itemize}
+  \end{block}
+  
+  %% \begin{block}{Bad examples (don't do that at home)}
+  %%   \vspace{0pt}
+  %%   \begin{itemize}
+  %%   \item Junk charts, K. Fung, 2005-2016.
+  %%   \item How to Display Data Badly, H. Wainer, 1984.
+  %%   \end{itemize}
+  %% \end{block}
+  
+\end{frame}
+
+
+
+
+
+%% % =============================================================================
+%% \section{Exercises}
+%% % =============================================================================
+
+
+%% % -----------------------------------------------------------------------------
+%% \begin{frame}{Pixelating an image}
+
+%%   How to obtain a pixelated picture from an original image?
+  
+%%   \begin{center}
+%%     \includegraphics[width=.45\textwidth]{Hamilton.jpg}
+%%     \includegraphics[width=.45\textwidth]{Hamilton-pixelated.jpg}
+%%   \end{center}
+%% \end{frame}
+
+
+%% % -----------------------------------------------------------------------------
+%% \begin{frame}{Misleading the reader}
+
+%%   What's wrong with the graphic below? How would you fix it?\\
+  
+%%   \begin{center}
+%%     \includegraphics[width=.75\textwidth]{obama.jpg}
+%%   \end{center}
+
+%% \end{frame}
+
+
+
+%% % -----------------------------------------------------------------------------
+%% \begin{frame}{Too much ink}
+%%   \begin{columns}
+%%     \begin{column}{.5\textwidth}
+%%       Consider the figure on the right and try to remove as much ink as you can
+%%       while keeping the most relevant information.\\
+%%       ~\\
+%%       Curve data at \url{http://www.labri.fr/perso/nrougier/tmp/curve.csv}\\
+%%       ~\\
+%%       Point data at \url{http://www.labri.fr/perso/nrougier/tmp/points.csv}\\
+%%     \end{column}
+%%     \begin{column}{.4\textwidth}
+%%       \includegraphics[width=\textwidth]{too-much-ink.png}
+%%     \end{column}
+%%   \end{columns}
+%% \end{frame}
+
+
+%% % -----------------------------------------------------------------------------
+%% \begin{frame}{Too much ink}
+%%   \begin{columns}
+%%     \begin{column}{.5\textwidth}
+%%       Consider the figure on the right and try to remove as much ink as you can
+%%       while keeping the most relevant information.\\
+%%       ~\\
+%%       Curve data at \url{http://www.labri.fr/perso/nrougier/tmp/curve.csv}\\
+%%       ~\\
+%%       Point data at \url{http://www.labri.fr/perso/nrougier/tmp/points.csv}\\
+%%     \end{column}
+%%     \begin{column}{.4\textwidth}
+%%       \includegraphics[width=\textwidth]{too-much-ink-2.png}
+%%     \end{column}
+%%   \end{columns}
+%% \end{frame}
+
+
+\end{document}

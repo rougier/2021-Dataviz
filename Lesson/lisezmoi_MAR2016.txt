@@ -1,0 +1,47 @@
+INSEE - Fichier détail de l'état civil - mariages de 2016
+
+Fichier dBase - MAR2016.dbf
+---------------------------------------------------------
+CONTENU
+
+Le fichier compacté [etatcivil2016_MAR2016_dbase.zip] que vous avez téléchargé regroupe 3 tables au format dBase:
+
+* MAR2016.dbf : contient les données selon 18 variables.
+
+* varlist_mariages.dbf : liste les variables présentes dans le fichier MAR2016.
+Ce fichier contient 4 champs :
+    VARIABLE : code de la variable
+    LIBELLE : libellé en clair de la variable
+    TYPE : type de la variable (CHAR=caractère ; NUM=numérique)
+    LONGUEUR : taille de la variable
+
+* varmod_mariages.dbf : décrit les modalités des variables présentes dans le fichier MAR2016.
+Ce fichier contient 3 champs :
+    VARIABLE : code de la variable
+    MODALITE : modalité de la variable
+    MODLIBELLE : libellé de la modalité
+
+Les fichiers varlist_mariages et varmod_mariages permettent de récupérer les intitulés des variables et de leurs modalités sous forme 
+électronique. Les intitulés sont ainsi directement utilisables lors de la confection des tableaux.
+
+---------------------------------------------------------
+MODE D'EMPLOI
+
+1 - Extraire les fichiers du ZIP dans le répertoire de votre choix.
+
+Pour conserver l'arborescence du ZIP et décompacter l'ensemble des fichiers, vérifiez que l'option permettant de restituer 
+l'arborescence est bien active (par exemple avec WinZip, choisir "Extraire", puis vérifier avant de valider que la case 
+"Utiliser noms de dossiers" est bien cochée). 
+
+2 - Utilisez les fichiers dBase avec votre outil de traitement habituel.
+
+NB : le fichier de données contient 232 725 enregistrements. Si vous tentez de l'ouvrir dans un tableur tel qu'Excel, 
+seules les 65 536 premières lignes seront chargées. En effet, les tableurs sont limités en nombre de colonnes 
+(par exemple : 256 dans Excel), mais aussi en nombre de lignes (la limite étant variable selon le logiciel et les versions, 
+par exemple 65 536 lignes dans Excel 2000). 
+
+L'ouverture directe d'une table dBase dans un tableur ne chargera donc que les premiers enregistrements du fichier si le 
+nombre d'enregistrements de la table dépasse la capacité en lignes du tableur, et généralement cela se produit sans 
+avertissement à l'utilisateur. Vous risquez donc dans ce cas de travailler sans le savoir sur des données tronquées.
+
+Il est préférable d'utiliser le fichier de données avec un outil de requêtes ou un logiciel de traitement statistique.
